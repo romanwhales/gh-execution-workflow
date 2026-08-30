@@ -69,12 +69,18 @@ jobs:
   deploy:
     needs: build
     uses: ./.github/workflows/reusable.yaml
+    with:
+      artifact-name: dist-files
 
   report:
     needs: [lint, deploy]
     if: failure()
     runs-on: ubuntu-latest
     steps:
+      - name: Get Code
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-files
       - name: Output Information
         run: |
           echo "Something went wrong"
